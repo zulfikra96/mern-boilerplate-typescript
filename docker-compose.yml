@@ -6,4 +6,4 @@ services:
             - "3000:3000"
         command: npm run dev
         volumes: 
-            - ./back-end:/home/back-end
+            - ./back-end:/home/back-end:rw
