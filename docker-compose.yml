@@ -1,9 +1,23 @@
 version: "3.9"
 services: 
-    back-end:
+    back_end:
         build: ./back-end
         ports: 
             - "3000:3000"
         command: npm run dev
         volumes: 
             - ./back-end:/home/back-end:rw
+        env_file: ./back-end/.env
+    mongodb:
+        image: mongo
+        environment: 
+            MONGO_INITDB_ROOT_USERNAME: admin
+            MONGO_INITDB_ROOT_PASSWORD: pass123
+            MONGO_INITDB_DATABASE: information_system
+            MONGO_USERNAME: si
+            MONGO_PASSWORD: pass123
+        volumes: 
+            - ./mongo-db:/data/db
+        ports: 
+            - 27017:27017
+        command: mongod
