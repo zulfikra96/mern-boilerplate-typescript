@@ -1,5 +1,8 @@
 import Model from "./Model";
 
+export interface UpdateOperation {
+    $set:object
+}
 
 export default class Users extends Model{
     constructor(){
@@ -17,5 +20,9 @@ export default class Users extends Model{
 
     public async deleteUser(value: any) {
         return this.deleteOne(value);
+    }
+
+    public async updateUser(query:any, operation:UpdateOperation){
+        return this.updateOne(query, operation);
     }
 }

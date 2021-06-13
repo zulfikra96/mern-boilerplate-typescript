@@ -1,12 +1,11 @@
 import { ObjectID, ObjectId } from "bson"
 import { noSql } from "../config/database"
+import { UpdateOperation } from "./Users"
 
 export default class Model {
     protected collection: string = ""
 
-    constructor() {
-
-    }
+    constructor() { }
 
     protected async findOne(args: Object) {
         return new Promise((resolve, reject) => {
@@ -35,8 +34,16 @@ export default class Model {
         })
     }
 
-    protected update() {
-
+    protected updateOne(query:object, operation:UpdateOperation) {
+        return new Promise((resolve, reject) => {
+            noSql(async (db, client) => {
+                const collection = await db.collection(this.collection);
+                const response   = await collection.updateOne(query, operation)
+                    .catch(reject)
+                client.close()
+                return resolve(response)
+            })
+        })
     }
 
     protected deleteOne(filter: any) {
@@ -48,8 +55,8 @@ export default class Model {
                     filter[filter_attr[0]] = new ObjectID(filter[filter_attr[0]])
                 }
                 try {
-                    const collection = await db.collection(this.collection);
-                    const response = await collection.deleteOne(filter)
+                    const collection    = await db.collection(this.collection);
+                    const response      = await collection.deleteOne(filter)
                     client.close()
                     return resolve(response);
                 } catch (error) {
